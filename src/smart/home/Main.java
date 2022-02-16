@@ -1,7 +1,7 @@
 package smart.home;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) throws InterruptedException {
 
         SmartHome smarthome = new SmartHome();
         AerConditionat aerConditionat1 = new AerConditionat();
@@ -16,15 +16,47 @@ public class Main {
 
         atribuireNume_Culoare(aerConditionat1, aerConditionat2, aerConditionat3);
 
-        for(int i = 0; i < smarthome.getElectrocasnice().size(); i++){
-            System.out.println(smarthome.getElectrocasnice().get(i).on());
-            System.out.println(smarthome.getElectrocasnice().get(i).off());
-        }
+//        for (int i = 0; i < smarthome.getElectrocasnice().size(); i++) {
+//            System.out.println(smarthome.getElectrocasnice().get(i).on());
+//            Thread.sleep(2000);
+//
+//            System.out.println(smarthome.getElectrocasnice().get(i).off());
+//        }
+
+        //        System.out.println(aerConditionat1.on());
+        //        System.out.println(expresor1.on());
+        //        System.out.println(cuptor1.on());
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(aerConditionat1.on());
+            }
+        };
+        new Thread(runnable).start();
+
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            expresor1.on();
+        }).start();
+
+
+
+        Runnable pornire = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(cuptor1.on());
+            }
+        };
+        new Thread(pornire).start();
+
 
     }
-
-
-
 
 
     private static void adaugareElectrocasnice(SmartHome smarthome, AerConditionat aerConditionat1, ExpresorCafea expresor1, Cuptor cuptor1) {
